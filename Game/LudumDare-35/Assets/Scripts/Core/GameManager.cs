@@ -20,6 +20,10 @@ public class GameManager : MonoBehaviour {
 
     public GameObject shapeshiftEffect;
 
+    public GameObject messagePanel;
+    public Text message;
+    public bool messageShowing;
+
 	void Start () {
         shapeShiftMenu.SetActive(shapeShiftMenuOpen);
     }
@@ -37,7 +41,34 @@ public class GameManager : MonoBehaviour {
                 openShapeShiftMenu();
         }
 
+        if (messageShowing)
+            handleMessage();
+
 	}
+
+    public void handleMessage()
+    {
+        if (Input.GetKeyDown(KeyCode.Return))
+            CloseMessage();
+    }
+
+    void OpenMessage(string message)
+    {
+        messageShowing = true;
+        player.canMove = false;
+
+        this.message.text = message;
+
+        messagePanel.SetActive(true);
+    }
+
+    void CloseMessage()
+    {
+        messageShowing = false;
+        player.canMove = true;
+        messagePanel.SetActive(false);
+        this.message.text = "";
+    }
 
     void openShapeShiftMenu()
     {
