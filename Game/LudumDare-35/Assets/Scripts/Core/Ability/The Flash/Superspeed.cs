@@ -8,7 +8,7 @@ public class Superspeed : Ability {
 
 	// Use this for initialization
 	void Start () {
-        runSpeed = 15f;
+        runSpeed = 20f;
 	}
 	
 	// Update is called once per frame
