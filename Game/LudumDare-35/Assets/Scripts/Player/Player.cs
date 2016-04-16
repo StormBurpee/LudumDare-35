@@ -77,7 +77,6 @@ public class Player : Entity {
     {
         foreach(learntAbilities la in learntAbilities)
         {
-            Debug.Log(la.learntFrom.superheroName + " " + s.superheroName);
             if (la.learntFrom.superheroName == s.superheroName)
                 la.ability.active = true;
             else
