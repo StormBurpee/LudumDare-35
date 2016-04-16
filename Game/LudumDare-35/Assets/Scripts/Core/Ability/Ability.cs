@@ -7,8 +7,10 @@ public class Ability : MonoBehaviour {
 
     protected Entity entity;
 
+    public bool active;
+
 	void Start () {
-	
+        active = false;
 	}
 	
 	void Update () {

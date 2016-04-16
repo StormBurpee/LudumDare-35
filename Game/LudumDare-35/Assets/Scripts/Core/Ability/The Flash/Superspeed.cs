@@ -13,14 +13,18 @@ public class Superspeed : Ability {
 	
 	// Update is called once per frame
 	void Update () {
-        if (Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.RightShift))
-            entity.speed = runSpeed;
-        else entity.speed = walkSpeed;
+        if (active)
+        {
+            if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
+                entity.speed = runSpeed;
+            else
+                entity.speed = entity.getNormalSpeed();
+        }
 	}
 
     public new void learnAbility(Entity e)
     {
         entity = e;
-        walkSpeed = e.speed;
+        Debug.Log("Learnt Ability");
     }
 }

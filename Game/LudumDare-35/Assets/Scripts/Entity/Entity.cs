@@ -4,6 +4,7 @@ using System.Collections;
 public class Entity : MonoBehaviour {
 
     public float speed = 2.5f;
+    public float normalSpeed;
     protected Rigidbody2D _Rigidbody;
     protected int direction = 0;
     protected float health;
@@ -14,9 +15,10 @@ public class Entity : MonoBehaviour {
     public Sprite[] south;
     public Sprite[] west;
 
-    void Start () {
+    protected void Start () {
         _Rigidbody = gameObject.GetComponent<Rigidbody2D>();
         direction = 0;
+        normalSpeed = speed;
     }
 	
 	void Update () {
@@ -36,5 +38,10 @@ public class Entity : MonoBehaviour {
         Vector2 end = start + dir * speed * Time.deltaTime;
         Vector2 endPos = new Vector2(end.x, end.y);
         _Rigidbody.MovePosition(endPos);
+    }
+    
+    public float getNormalSpeed()
+    {
+        return normalSpeed;
     }
 }

@@ -9,8 +9,17 @@ public class Player : Entity {
 
     public bool canMove;
 
-	void Start () {
-        
+	new void Start () {
+        canMove = true;
+
+        foreach(learntAbilities a in learntAbilities)
+        {
+            Ability ab = CopyComponent(a.ability, gameObject);
+            ab.learnAbility(this);
+            a.ability = ab;
+        }
+
+        base.Start();
 	}
 	
 	void Update () {
@@ -21,7 +30,22 @@ public class Player : Entity {
             h = 0;
         if ((v != 0 || h != 0) && canMove)
             Move(h, v);
+
+        if (Input.GetKeyDown(KeyCode.Y))
+            learntAbilities[0].ability.active = !learntAbilities[0].ability.active;
 	}
+
+    T CopyComponent<T>(T original, GameObject destination) where T : Component
+    {
+        System.Type type = original.GetType();
+        Component copy = destination.AddComponent(type);
+        System.Reflection.FieldInfo[] fields = type.GetFields();
+        foreach (System.Reflection.FieldInfo field in fields)
+        {
+            field.SetValue(copy, field.GetValue(original));
+        }
+        return copy as T;
+    }
 }
 
 [System.Serializable]
