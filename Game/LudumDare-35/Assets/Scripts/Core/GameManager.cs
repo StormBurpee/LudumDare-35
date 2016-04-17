@@ -24,8 +24,18 @@ public class GameManager : MonoBehaviour {
     public Text message;
     public bool messageShowing;
 
+    public GameObject updatePanel;
+    public Text updateText;
+
+    public float messageTime;
+    bool typingMessage = false;
+    string fullMessage;
+
 	void Start () {
         shapeShiftMenu.SetActive(shapeShiftMenuOpen);
+        updatePanel.SetActive(false);
+        OpenMessage("Hey there, Ronny! I'm the flash. The fastest man alive.");
+        ShowUpdatePanel("One year ago...");
     }
 	
 	void Update () {
@@ -46,10 +56,31 @@ public class GameManager : MonoBehaviour {
 
 	}
 
+    public void ShowUpdatePanel(string message)
+    {
+        updatePanel.SetActive(true);
+        updateText.text = message;
+        StartCoroutine(ClosePanelAfterTime());
+    }
+
+    IEnumerator ClosePanelAfterTime()
+    {
+        yield return new WaitForSeconds(3.5f);
+        CloseUpdatePanel();
+    }
+
+    public void CloseUpdatePanel()
+    {
+        updatePanel.SetActive(false);
+        updateText.text = "";
+    }
+
     public void handleMessage()
     {
-        if (Input.GetKeyDown(KeyCode.Return))
+        if (Input.GetKeyDown(KeyCode.Return) && !typingMessage)
             CloseMessage();
+        else if (Input.GetKeyDown(KeyCode.Return) && typingMessage)
+            GetOnWithIt();
     }
 
     void OpenMessage(string message)
@@ -57,9 +88,33 @@ public class GameManager : MonoBehaviour {
         messageShowing = true;
         player.canMove = false;
 
-        this.message.text = message;
-
+        this.message.text = "";
+        fullMessage = message;
+        StartCoroutine(ShowMessage(message));
         messagePanel.SetActive(true);
+    }
+    void GetOnWithIt()
+    {
+        typingMessage = false;
+        this.message.text = fullMessage;
+    }
+
+    IEnumerator ShowMessage(string message)
+    {
+        string text = "";
+        typingMessage = true;
+        foreach(char letter in message.ToCharArray())
+        {
+            if (typingMessage)
+            {
+                text += letter;
+                this.message.text = text;
+                yield return new WaitForSeconds(messageTime);
+            }
+            else
+                break;
+        }
+        typingMessage = false;
     }
 
     void CloseMessage()
