@@ -214,6 +214,7 @@ public class Level0 : LevelBase {
                 evenMoreMessages.Add("The Flash: Hey, " + gm.playerName + " do you think you could go find WonderWoman, and learn how to fly?");
                 evenMoreMessages.Add("The Flash: Once you've learnt how to fly, you'll be able to fly across and help out Arrow.");
                 evenMoreMessages.Add("Cisco: He might even teach you how to shoot an arrow!");
+                gm.StartNarrative(evenMoreMessages);
                 EndLevel();
             }
         }
