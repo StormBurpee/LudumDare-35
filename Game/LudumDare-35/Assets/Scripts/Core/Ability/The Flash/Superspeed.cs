@@ -25,6 +25,5 @@ public class Superspeed : Ability {
     public new void learnAbility(Entity e)
     {
         entity = e;
-        Debug.Log("Learnt Ability");
     }
 }

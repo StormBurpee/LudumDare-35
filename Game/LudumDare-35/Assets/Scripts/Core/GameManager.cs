@@ -2,6 +2,7 @@
 using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
+using System;
 
 public class GameManager : MonoBehaviour {
 
@@ -70,6 +71,9 @@ public class GameManager : MonoBehaviour {
             miniMap.SetActive(true);
         else
             miniMap.SetActive(false);
+
+        if (locationCallback != null)
+            HandleLocationObjective();
 	}
 
     public void ShowUpdatePanel(string message)
@@ -110,12 +114,22 @@ public class GameManager : MonoBehaviour {
         nextMessages.RemoveAt(0);
     }
 
+    private Action<string> cbck;
     public void StartNarrative(List<string> messagesToShow)
     {
         narrativeFinished = false;
         nextMessages.Clear();
         nextMessages = messagesToShow;
         ShowNextMessage();
+        cbck = null;
+    }
+    public void StartNarrative(List<string> messagesToShow, Action<string> callback)
+    {
+        narrativeFinished = false;
+        nextMessages.Clear();
+        nextMessages = messagesToShow;
+        ShowNextMessage();
+        cbck = callback;
     }
 
     public void OpenMessage(string message)
@@ -159,6 +173,8 @@ public class GameManager : MonoBehaviour {
         messagePanel.SetActive(false);
         this.message.text = "";
         narrativeFinished = true;
+        if (cbck != null)
+            cbck("finished");
     }
 
     void openShapeShiftMenu()
@@ -235,6 +251,26 @@ public class GameManager : MonoBehaviour {
                 return true;
         }
         return false;
+    }
+
+    private Action<string> locationCallback = null;
+    private string objLocation = "";
+    public void LocationBasedObjective(Vector2 pos, string Location, Action<string> callback)
+    {
+        PlaceObjective(pos);
+        objLocation = Location;
+        locationCallback = callback;
+    }
+
+    public void HandleLocationObjective()
+    {
+        if(currentLocation == objLocation)
+        {
+            locationCallback("true");
+            locationCallback = null;
+            objLocation = "";
+            FinishObjective();
+        }
     }
 
     public void PlaceObjective(Vector2 pos)

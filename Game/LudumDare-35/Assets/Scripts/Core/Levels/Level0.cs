@@ -6,6 +6,7 @@ public class Level0 : LevelBase {
 
     public GameObject theFlash;
     public GameManager gm;
+    public StoryManager sm;
     public Player player;
 
     public Transform StarLabs;
@@ -96,7 +97,9 @@ public class Level0 : LevelBase {
         }
 
         //gm.OpenMessage("The Flash: David has a nice face.");
-        gm.OpenMessage("The Flash: Hey, you! I need your help, really quickly! Can you take this secret ring to Star Labs? I'll meet you there when I've done fighting crime.");
+        List<string> msg = new List<string>();
+        msg.Add("The Flash: Hey, you! I need your help, really quickly! Can you take this secret ring to Star Labs? I'll meet you there when I've done fighting crime.");
+        gm.StartNarrative(msg);
         firstStarted = true;
         theFlash.GetComponent<Entity>().ChangeDirection(3);
 
@@ -212,6 +215,7 @@ public class Level0 : LevelBase {
                 evenMoreMessages.Add("Cisco: Hey! We should call you GoldRing-Man! Another great name by yours tru...");
                 evenMoreMessages.Add("Cisco: Hold up guys, the fun and games is now over... It looks like zoom has banished Arrow to an island.");
                 evenMoreMessages.Add("The Flash: Hey, " + gm.playerName + " do you think you could go find WonderWoman, and learn how to fly?");
+                evenMoreMessages.Add("Cisco: I hear that she hangs out in the bottom right of central city - It's a dirt road to her, surrounded by trees and flowers");
                 evenMoreMessages.Add("The Flash: Once you've learnt how to fly, you'll be able to fly across and help out Arrow.");
                 evenMoreMessages.Add("Cisco: He might even teach you how to shoot an arrow!");
                 gm.StartNarrative(evenMoreMessages);
@@ -259,5 +263,7 @@ public class Level0 : LevelBase {
     {
         levelActive = false;
         gm.FinishObjective();
+        sm.currentLevel++;
+        //theFlash.transform.position = new Vector2(-100, -100);
     }
 }
