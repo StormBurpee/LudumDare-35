@@ -5,6 +5,8 @@ using System.Collections.Generic;
 
 public class GameManager : MonoBehaviour {
 
+    public string playerName = "Sam";
+
     public Player player;
     public List<Superhero> superheroes = new List<Superhero>();
     public List<learntAbilities> allAbilities = new List<learntAbilities>();
@@ -22,6 +24,7 @@ public class GameManager : MonoBehaviour {
 
     public GameObject messagePanel;
     public Text message;
+    private List<string> nextMessages = new List<string>();
     public bool messageShowing;
 
     public GameObject updatePanel;
@@ -36,6 +39,9 @@ public class GameManager : MonoBehaviour {
     public GameObject mapObjective;
     private GameObject mapObjectiveG;
     public GameObject miniMap;
+
+    [HideInInspector]
+    public bool narrativeFinished;
 
 	void Start () {
         shapeShiftMenu.SetActive(shapeShiftMenuOpen);
@@ -88,9 +94,28 @@ public class GameManager : MonoBehaviour {
     public void handleMessage()
     {
         if (Input.GetKeyDown(KeyCode.Return) && !typingMessage)
-            CloseMessage();
+        {
+            if (nextMessages.Count > 0)
+                ShowNextMessage();
+            else
+                CloseMessage();
+        }
         else if (Input.GetKeyDown(KeyCode.Return) && typingMessage)
             GetOnWithIt();
+    }
+
+    public void ShowNextMessage()
+    {
+        OpenMessage(nextMessages[0]);
+        nextMessages.RemoveAt(0);
+    }
+
+    public void StartNarrative(List<string> messagesToShow)
+    {
+        narrativeFinished = false;
+        nextMessages.Clear();
+        nextMessages = messagesToShow;
+        ShowNextMessage();
     }
 
     public void OpenMessage(string message)
@@ -133,6 +158,7 @@ public class GameManager : MonoBehaviour {
         player.canMove = true;
         messagePanel.SetActive(false);
         this.message.text = "";
+        narrativeFinished = true;
     }
 
     void openShapeShiftMenu()

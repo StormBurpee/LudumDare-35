@@ -7,10 +7,14 @@ public class Player : Entity {
     public List<learntAbilities> learntAbilities = new List<learntAbilities>();
     public List<superheroesMet> superheroesMet = new List<superheroesMet>();
 
+    private GameManager gm;
+
     public bool canMove;
 
 	new void Start () {
         canMove = true;
+
+        gm = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
 
         foreach(learntAbilities a in learntAbilities)
         {
@@ -39,6 +43,23 @@ public class Player : Entity {
         la.learntFrom = super;
         this.learntAbilities.Add(la);
         updateLearntAbilities();
+
+        bool heroUnlocked = gm.isHeroUnlocked(super);
+
+        if (!heroUnlocked)
+        {
+            gm.ShowUpdatePanel("Met " + super.superheroName + ", learnt " + a.abilityName);
+            MeetSuperhero(super);
+        }
+        else
+            gm.ShowUpdatePanel("Learnt " + a.abilityName);
+    }
+    public void MeetSuperhero(Superhero super)
+    {
+        superheroesMet sm = new global::superheroesMet();
+        sm.currentLevel = 0;
+        sm.superhero = super;
+        superheroesMet.Add(sm);
     }
 	
 	void Update () {
