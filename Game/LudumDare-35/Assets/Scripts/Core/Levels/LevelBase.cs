@@ -1,22 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class LevelBase : MonoBehaviour {
-    
-	void Start () {
-	
-	}
-	
-	void Update () {
-	
-	}
+public abstract class LevelBase : MonoBehaviour {
 
-    public void StartLevel()
-    {
+    protected bool levelActive;
 
-    }
-    public void EndLevel()
-    {
-
-    }
+    public abstract void StartLevel();
+    public abstract void EndLevel();
 }

@@ -6,6 +6,7 @@ public class Door : MonoBehaviour {
     public Transform gotoPos;
     public string title;
     private GameManager gm;
+    public bool isLocked;
 
 	// Use this for initialization
 	void Start () {
@@ -21,9 +22,18 @@ public class Door : MonoBehaviour {
     {
         if (col.GetComponent<Player>())
         {
-            if (gm != null)
-                gm.ShowUpdatePanel(title);
-            col.transform.position = gotoPos.position;
+
+            if (!isLocked)
+            {
+                if (gm != null)
+                {
+                    gm.ShowUpdatePanel(title);
+                    gm.currentLocation = title;
+                }
+                col.transform.position = gotoPos.position;
+            }
+            else
+                if (gm != null) gm.ShowUpdatePanel("The door is locked.");
         }
     }
 }

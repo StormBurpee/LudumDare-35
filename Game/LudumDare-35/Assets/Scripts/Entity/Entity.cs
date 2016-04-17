@@ -25,6 +25,12 @@ public class Entity : MonoBehaviour {
         
     }
 
+    public void ChangeDirection(int dir)
+    {
+        direction = dir;
+        updateSprite();
+    }
+
     protected void Move(float h, float v)
     {
         if (h > 0)

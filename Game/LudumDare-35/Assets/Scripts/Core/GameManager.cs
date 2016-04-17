@@ -31,11 +31,17 @@ public class GameManager : MonoBehaviour {
     bool typingMessage = false;
     string fullMessage;
 
+    public string currentLocation;
+
+    public GameObject mapObjective;
+    private GameObject mapObjectiveG;
+    public GameObject miniMap;
+
 	void Start () {
         shapeShiftMenu.SetActive(shapeShiftMenuOpen);
         updatePanel.SetActive(false);
-        OpenMessage("Hey there, Ronny! I'm the flash. The fastest man alive.");
-        ShowUpdatePanel("One year ago...");
+        //OpenMessage("Hey there, Ronny! I'm the flash. The fastest man alive.");
+        ShowUpdatePanel("One hour ago...");
     }
 	
 	void Update () {
@@ -54,6 +60,10 @@ public class GameManager : MonoBehaviour {
         if (messageShowing)
             handleMessage();
 
+        if (currentLocation == "Central City" && !shapeShiftMenuOpen && !messageShowing)
+            miniMap.SetActive(true);
+        else
+            miniMap.SetActive(false);
 	}
 
     public void ShowUpdatePanel(string message)
@@ -83,7 +93,7 @@ public class GameManager : MonoBehaviour {
             GetOnWithIt();
     }
 
-    void OpenMessage(string message)
+    public void OpenMessage(string message)
     {
         messageShowing = true;
         player.canMove = false;
@@ -199,5 +209,15 @@ public class GameManager : MonoBehaviour {
                 return true;
         }
         return false;
+    }
+
+    public void PlaceObjective(Vector2 pos)
+    {
+        mapObjectiveG = Instantiate(mapObjective, pos, Quaternion.identity) as GameObject;
+    }
+
+    public void FinishObjective()
+    {
+        Destroy(mapObjectiveG);
     }
 }
