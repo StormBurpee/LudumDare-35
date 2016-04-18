@@ -30,9 +30,13 @@ public class Player : Entity {
     {
         foreach (learntAbilities a in learntAbilities)
         {
-            Ability ab = CopyComponent(a.ability, gameObject);
-            ab.learnAbility(this);
-            a.ability = ab;
+            if (a.hasCreated == false)
+            {
+                Ability ab = CopyComponent(a.ability, gameObject);
+                ab.learnAbility(this);
+                a.ability = ab;
+                a.hasCreated = true;
+            }
         }
     }
 
@@ -70,9 +74,6 @@ public class Player : Entity {
             h = 0;
         if ((v != 0 || h != 0) && canMove)
             Move(h, v);
-
-        if (Input.GetKeyDown(KeyCode.Y))
-            learntAbilities[0].ability.active = !learntAbilities[0].ability.active;
 	}
 
     T CopyComponent<T>(T original, GameObject destination) where T : Component
@@ -117,6 +118,7 @@ public class Player : Entity {
 
     public void Shapeshift(Superhero s)
     {
+        DisableAllAbilities();
         EnableHeroAbilities(s);
         north = s.north;
         east = s.east;
@@ -131,6 +133,7 @@ public class learntAbilities
 {
     public Ability ability;
     public Superhero learntFrom;
+    public bool hasCreated = false;
 }
 
 [System.Serializable]

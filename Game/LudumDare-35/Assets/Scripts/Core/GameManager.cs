@@ -2,6 +2,7 @@
 using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 using System;
 
 public class GameManager : MonoBehaviour {
@@ -211,6 +212,11 @@ public class GameManager : MonoBehaviour {
         shapeShiftMenuOpen = false;
         shapeShiftMenu.SetActive(shapeShiftMenuOpen);
         player.canMove = true;
+    }
+
+    public void EndGame()
+    {
+        SceneManager.LoadScene(2);
     }
 
     void handleShapeShift()
